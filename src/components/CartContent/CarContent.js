@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { useCartContext } from "../context/cart_context";
+import { useCartContext } from "../../context/cart_context";
 import { Link } from "react-router-dom";
-import CartColumns from "./CartColumns";
-import CartItem from "./CartItem";
-import CartTotals from "./CartTotals";
+import CartColumns from "../CartColumns/CartColumns";
+import CartItem from "../CartItem";
+import CartTotals from "../CartTotals";
 const CartItems = () => {
   const { cart, clearCart } = useCartContext();
 
