@@ -1,23 +1,11 @@
-import {
-	useEffect,
-	useContext,
-	useReducer,
-	createContext,
-	ReactNode,
-} from "react";
-import reducer from "../reducers/filter_reducer";
-import {
-	LOAD_PRODUCTS,
-	SET_GRIDVIEW,
-	SET_LISTVIEW,
-	UPDATE_SORT,
-	SORT_PRODUCTS,
-	UPDATE_FILTERS,
-	FILTER_PRODUCTS,
-	CLEAR_FILTERS,
-} from "../actions";
-import { useProductsContext } from "./products_context";
+
+
+
 import { FilterContextType, FilterProviderProps, FilterState } from "./types";
+import { CLEAR_FILTERS, FILTER_PRODUCTS, LOAD_PRODUCTS, SET_GRIDVIEW, SET_LISTVIEW, SORT_PRODUCTS, UPDATE_FILTERS, UPDATE_SORT } from "../../actions";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import useProductsContext from '../products_context';
+
 
 const initialState: FilterState = {
 	filtered_products: [],
