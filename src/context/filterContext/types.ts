@@ -45,6 +45,9 @@ import { ReactNode } from "react";
  type FilterProviderProps = {
 	children: ReactNode;
 };
+type ProductsProviderProps = {
+	children: ReactNode
+}
 
 
-export type { FilterProviderProps, FilterContextType, FilterState, Product, FiltersProps }
+export type { FilterProviderProps, FilterContextType, FilterState, Product, FiltersProps, ProductsProviderProps }

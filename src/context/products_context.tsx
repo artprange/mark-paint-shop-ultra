@@ -12,6 +12,7 @@ import {
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
 } from "../actions";
+import { ProductsProviderProps } from "./filterContext/types";
 
 const initialState = {
   isSidebarOpen: false,
@@ -26,7 +27,7 @@ const initialState = {
 
 export const ProductsContext = React.createContext();
 
-export const ProductsProvider = ({ children }) => {
+export const ProductsProvider = ({ children }:ProductsProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const openSidebar = () => {
