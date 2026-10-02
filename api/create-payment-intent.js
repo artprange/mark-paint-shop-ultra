@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 
-import { getTable, json, toSingleProduct } from './_lib/airtable.js'
+import { getTable, toSingleProduct } from './_lib/airtable.js'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -39,41 +39,42 @@ async function calculateOrderAmount(cart) {
   return amounts.reduce((total, value) => total + value, SHIPPING_FEE)
 }
 
-export async function handler(event) {
-  if (event.httpMethod !== 'POST') {
-    return json(405, { error: 'Método não permitido' })
+export default async function handler(request, response) {
+  if (request.method !== 'POST') {
+    return response.status(405).json({ error: 'Método não permitido' })
   }
 
-  let cart
-  try {
-    ;({ cart } = JSON.parse(event.body ?? '{}'))
-  } catch {
-    return json(400, { error: 'Corpo da requisição inválido' })
+  // A Vercel já entrega o corpo parseado quando o content-type é JSON, mas
+  // uma string ainda chega aqui se o cliente mandar outro content-type.
+  let body = request.body
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body)
+    } catch {
+      return response.status(400).json({ error: 'Corpo da requisição inválido' })
+    }
   }
+
+  const cart = body?.cart
 
   if (!Array.isArray(cart) || cart.length === 0) {
-    return json(400, { error: 'Carrinho vazio' })
+    return response.status(400).json({ error: 'Carrinho vazio' })
   }
 
   try {
-    // O valor é recalculado aqui a partir dos preços da Airtable. A versão
-    // anterior somava `shipping_fee + total_amount` vindos do corpo da
-    // requisição — valores que o cliente controla —, apesar do comentário no
-    // próprio arquivo dizendo para calcular no servidor justamente para
-    // evitar isso.
+    // O valor é recalculado aqui a partir dos preços da Airtable, nunca a
+    // partir do total que o cliente manda.
     const amount = await calculateOrderAmount(cart)
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      // Era "usd". A loja exibe os preços com Intl em pt-BR e BRL, então o
-      // cliente via R$ 985,34 e era cobrado em dólar.
       currency: 'brl',
       automatic_payment_methods: { enabled: true },
     })
 
-    return json(200, { clientSecret: paymentIntent.client_secret })
+    return response.status(200).json({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
     console.error('Falha ao criar payment intent:', error.message)
-    return json(400, { error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 }

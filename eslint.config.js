@@ -9,10 +9,9 @@ export default tseslint.config(
     ignores: [
       'dist',
       'node_modules',
-      // Pendentes de conversão para TSX — contêm JSX em arquivos .js, que o
-      // parser não aceita. Remover desta lista conforme forem convertidos.
-      'src/**/*.js',
-      'functions/**/*.js',
+      // As funções em api/ rodam em Node, não no navegador: os globals e o
+      // parser deste config são do front.
+      'api/**/*.js',
     ],
   },
   {
