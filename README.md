@@ -31,9 +31,9 @@ serviço é independente, e o que ficar em branco continua no modo simulado.
 
 | Variável | Efeito |
 | --- | --- |
-| `VITE_PRODUCTS_API` | Troca o catálogo local pela API real |
+| `VITE_PRODUCTS_API` | Troca o catálogo local pela API real (`/api`) |
 | `VITE_AUTH0_DOMAIN` + `VITE_AUTH0_CLIENT_ID` | Troca o login simulado pelo Auth0 |
-| `VITE_STRIPE_PUBLIC_KEY` + `VITE_PAYMENTS_API` | Troca o checkout simulado pela Stripe |
+| `VITE_STRIPE_PUBLIC_KEY` + `VITE_PAYMENTS_API` | Troca o checkout simulado pela Stripe (`/api`) |
 
 As variáveis sem prefixo `VITE_` (`AIRTABLE_*`, `STRIPE_SECRET_KEY`) são do
 back-end e nunca chegam ao navegador. **A chave secreta da Stripe não pode
@@ -64,7 +64,7 @@ src/
   reducers/            unions discriminadas por action
   services/            contratos de dados (produtos, pagamento)
   types/               tipos de domínio compartilhados
-functions/             Netlify Functions (Airtable, Stripe)
+api/                   funções serverless (Airtable, Stripe)
 ```
 
 `src/routes` só declara rotas e aponta para as páginas; os componentes
@@ -102,13 +102,22 @@ não quebram a tela, só entregam o resultado errado.
 
 ## Deploy
 
-`netlify.toml` já declara build, publish, a pasta de functions, a versão do
-Node e o redirect de SPA. As variáveis de ambiente são configuradas no painel
-do Netlify — tanto as `VITE_*` (usadas no build) quanto as do back-end.
+Hospedado na Vercel, preset Vite, root `./`. O `vercel.json` declara o
+rewrite de SPA — sem ele, recarregar `/products` direto no navegador devolve
+404, porque esse caminho não existe como arquivo. A regra exclui `/api/` para
+não engolir as funções.
+
+A versão do Node vem de `engines.node` no package.json. As variáveis de
+ambiente são configuradas no painel da Vercel — tanto as `VITE_*` (lidas
+durante o build) quanto as do back-end.
 
 Sem nenhuma variável configurada o site publicado funciona: catálogo local,
 login simulado e checkout simulado. É proposital — o deploy não depende de
 credencial para ser visitável.
+
+As funções em `api/` seguem a assinatura da Vercel
+(`export default (request, response)`). Arquivos sob `api/_lib` não viram
+endpoint: a Vercel ignora o que começa com underscore.
 
 ### Imagens
 

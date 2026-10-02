@@ -1,11 +1,14 @@
 import Airtable from 'airtable-node'
 
 /**
- * Acesso à Airtable compartilhado pelas functions.
+ * Acesso à Airtable compartilhado pelas funções de API.
  *
- * As variáveis vêm do ambiente do Netlify em produção e de um .env local em
- * desenvolvimento (o `netlify dev` carrega o arquivo sozinho — não é preciso
+ * As variáveis vêm do ambiente da Vercel em produção e de um .env local em
+ * desenvolvimento (o `vercel dev` carrega o arquivo sozinho — não é preciso
  * chamar dotenv aqui).
+ *
+ * O prefixo `_` tira este diretório da lista de rotas: a Vercel não publica
+ * como endpoint nada que comece com underscore dentro de api/.
  */
 const { AIRTABLE_API_KEY, AIRTABLE_BASE, AIRTABLE_TABLE } = process.env
 
@@ -80,13 +83,5 @@ export function toSingleProduct({ id, fields }) {
     stock: stock ?? 0,
     reviews: reviews ?? 0,
     stars: stars ?? 0,
-  }
-}
-
-export function json(statusCode, body) {
-  return {
-    statusCode,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
   }
 }
