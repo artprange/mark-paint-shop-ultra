@@ -8,16 +8,17 @@ import { FilterProvider } from './context/filterContext/useFilterContext'
 import { ProductsProvider } from './context/productsContext/useProductsContext'
 import { UserProvider } from './context/userContext'
 import AboutPage from './pages/AboutPage'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
 import ErrorPage from './pages/ErrorPage'
 import HomePage from './pages/HomePage'
+import PrivateRoute from './pages/PrivateRoute'
 import ProductsPage from './pages/ProductsPage'
 import SingleProductPage from './pages/SingleProductPage'
 
 /**
  * A ordem dos providers importa: FilterProvider lê `products` do
  * ProductsProvider, então precisa estar dentro dele.
- *
- * Rotas ainda não migradas: /cart e /checkout. Até lá caem na rota curinga.
  */
 export default function App() {
   return (
@@ -33,6 +34,15 @@ export default function App() {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/products" element={<ProductsPage />} />
                 <Route path="/products/:id" element={<SingleProductPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route
+                  path="/checkout"
+                  element={
+                    <PrivateRoute>
+                      <CheckoutPage />
+                    </PrivateRoute>
+                  }
+                />
                 <Route path="*" element={<ErrorPage />} />
               </Routes>
               <Footer />
