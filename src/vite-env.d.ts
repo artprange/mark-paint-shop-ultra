@@ -7,6 +7,13 @@ interface ImportMetaEnv {
    * catálogo mock local — é o que permite rodar sem backend nem chaves.
    */
   readonly VITE_PRODUCTS_API?: string
+
+  /**
+   * Credenciais do Auth0. Se qualquer uma faltar, a aplicação usa o login
+   * simulado de `context/userContext/MockUserProvider`.
+   */
+  readonly VITE_AUTH0_DOMAIN?: string
+  readonly VITE_AUTH0_CLIENT_ID?: string
 }
 
 interface ImportMeta {

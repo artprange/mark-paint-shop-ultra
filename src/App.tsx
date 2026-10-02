@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-function App() {
-  const [count, setCount] = useState(0)
+import Footer from './components/Footer'
+import Navbar from './components/Navbar'
+import Sidebar from './components/Sidebar'
+import { CartProvider } from './context/cartContext/useCartContext'
+import { FilterProvider } from './context/filterContext/useFilterContext'
+import { ProductsProvider } from './context/productsContext/useProductsContext'
+import { UserProvider } from './context/userContext'
+import ErrorPage from './pages/ErrorPage'
+import HomePage from './pages/HomePage'
 
+/**
+ * A ordem dos providers importa: FilterProvider lê `products` do
+ * ProductsProvider, então precisa estar dentro dele.
+ *
+ * Rotas ainda não migradas: /products, /products/:id, /about, /cart e
+ * /checkout. Até lá elas caem na rota curinga.
+ */
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <UserProvider>
+      <ProductsProvider>
+        <FilterProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <Navbar />
+              <Sidebar />
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="*" element={<ErrorPage />} />
+              </Routes>
+              <Footer />
+            </BrowserRouter>
+          </CartProvider>
+        </FilterProvider>
+      </ProductsProvider>
+    </UserProvider>
   )
 }
-
-export default App

@@ -1,34 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import heroBcg from "../assets/voando_hero.png";
-import heroBcg2 from "../assets/mark_pistola_hero.png";
+import styled from 'styled-components'
 
-const Hero = () => {
-  return (
-    <Wrapper className="section-center">
-      <article className="content">
-        <h2>
-          Adrenalina & <br />
-        </h2>
-        <h1> pintura</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-          eligendi voluptate accusantium magni iusto veritatis?
-        </p>
-        <Link to="/products" className="btn hero-btn">
-          ver loja
-        </Link>
-      </article>
-      <article className="img-container">
-        <img src={heroBcg} alt="voando" className="main-img" />
-        <img src={heroBcg2} alt="segurando a pistola" className="accent-img" />
-      </article>
-    </Wrapper>
-  );
-};
-
-const Wrapper = styled.section`
+export const Wrapper = styled.section`
   min-height: 60vh;
   display: grid;
   place-items: center;
@@ -43,7 +15,7 @@ const Wrapper = styled.section`
     line-height: 2;
     max-width: 45em;
     margin-bottom: 2rem;
-    color: "#fffff48";
+    color: var(--clr-grey-5);
     font-size: 1rem;
   }
   @media (min-width: 992px) {
@@ -81,16 +53,14 @@ const Wrapper = styled.section`
       border-radius: var(--radius);
     }
     .img-container::before {
-      content: "";
+      content: '';
       position: absolute;
       width: 10%;
       height: 80%;
-      background: "";
+      background: var(--clr-primary-9);
       bottom: 0%;
       left: -8%;
       border-radius: var(--radius);
     }
   }
-`;
-
-export default Hero;
+`
