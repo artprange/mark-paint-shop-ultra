@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 
-import heroBcg from '../../assets/voando_hero.png'
-import heroBcg2 from '../../assets/mark_pistola_hero.png'
+import heroBcg from '../../assets/voando_hero.webp'
+import heroBcg2 from '../../assets/mark_pistola_hero.webp'
 import { Wrapper } from './styles'
 
 export default function Hero() {

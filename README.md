@@ -21,6 +21,7 @@ necessária.
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` | Checagem de tipos (`tsc -b`) e build de produção |
 | `npm run lint` | ESLint |
+| `npm test` | Testes (Vitest) |
 | `npm run preview` | Serve o build local |
 
 ## Ligando os serviços reais
@@ -88,8 +89,29 @@ presença das variáveis de ambiente.
 É isso que permite rodar a aplicação inteira sem credencial, e trocar de
 provedor sem tocar em componente.
 
+## Testes
+
+```bash
+npm test
+```
+
+Cobrem a lógica pura: validação dos filtros da URL, aplicação de filtros e
+ordenação, e o reducer do carrinho. São as partes onde um erro é silencioso —
+um filtro que devolve a lista errada ou um carrinho que ultrapassa o estoque
+não quebram a tela, só entregam o resultado errado.
+
 ## Deploy
 
-`netlify.toml` já declara build, publish e a pasta de functions, além do
-redirect de SPA. As variáveis de ambiente são configuradas no painel do
-Netlify — tanto as `VITE_*` (usadas no build) quanto as do back-end.
+`netlify.toml` já declara build, publish, a pasta de functions, a versão do
+Node e o redirect de SPA. As variáveis de ambiente são configuradas no painel
+do Netlify — tanto as `VITE_*` (usadas no build) quanto as do back-end.
+
+Sem nenhuma variável configurada o site publicado funciona: catálogo local,
+login simulado e checkout simulado. É proposital — o deploy não depende de
+credencial para ser visitável.
+
+### Imagens
+
+As fotos de produto são servidas em WebP, redimensionadas para 1200px no lado
+maior. Os originais eram PNG de câmera de celular somando 57 MB; a página de
+produtos sozinha carregava mais de 50 MB. Hoje o deploy inteiro tem 3 MB.

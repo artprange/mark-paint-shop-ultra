@@ -1,6 +1,6 @@
-import { Auth0Provider } from '@auth0/auth0-react'
+import { lazy, Suspense } from 'react'
 
-import { Auth0UserProvider } from './Auth0UserProvider'
+import Loading from '../../components/Loading'
 import { MockUserProvider } from './MockUserProvider'
 import type { UserProviderProps } from './types'
 
@@ -10,8 +10,17 @@ const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID
 export const isAuthConfigured = Boolean(domain && clientId)
 
 /**
- * Sem domínio e client id do Auth0, cai no login simulado — a aplicação sobe
- * sem credencial nenhuma. Com as duas variáveis definidas, usa o Auth0 real.
+ * Import tardio: o SDK do Auth0 tem peso próprio e um import estático o
+ * colocaria no bundle principal mesmo em instalações que usam o login
+ * simulado — que é o caso quando as variáveis não estão definidas.
+ */
+const Auth0Stack = lazy(() =>
+  import('./Auth0UserProvider').then((m) => ({ default: m.Auth0Stack })),
+)
+
+/**
+ * Sem domínio e client id do Auth0, usa o login simulado — a aplicação sobe
+ * sem credencial nenhuma. Com as duas variáveis, usa o Auth0 real.
  */
 export function UserProvider({ children }: UserProviderProps) {
   if (!isAuthConfigured) {
@@ -19,14 +28,11 @@ export function UserProvider({ children }: UserProviderProps) {
   }
 
   return (
-    <Auth0Provider
-      domain={domain!}
-      clientId={clientId!}
-      authorizationParams={{ redirect_uri: window.location.origin }}
-      cacheLocation="localstorage"
-    >
-      <Auth0UserProvider>{children}</Auth0UserProvider>
-    </Auth0Provider>
+    <Suspense fallback={<Loading />}>
+      <Auth0Stack domain={domain!} clientId={clientId!}>
+        {children}
+      </Auth0Stack>
+    </Suspense>
   )
 }
 

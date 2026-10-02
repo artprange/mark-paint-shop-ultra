@@ -1,7 +1,7 @@
 import { FaTimes } from 'react-icons/fa'
 import { Link } from '@tanstack/react-router'
 
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.webp'
 import { links } from '../../utils/constants'
 import { useSidebarContext } from '../../context/sidebarContext/useSidebarContext'
 import { useUserContext } from '../../context/userContext'
