@@ -1,35 +1,27 @@
+import { createContext, useContext, useEffect, useReducer } from 'react'
+import reducer, {
+  initialFilterState,
+  type SortOption,
+} from '../../reducers/filter_reducer'
+import {
+  CLEAR_FILTERS,
+  FILTER_PRODUCTS,
+  LOAD_PRODUCTS,
+  SET_GRIDVIEW,
+  SET_LISTVIEW,
+  SORT_PRODUCTS,
+  UPDATE_FILTERS,
+  UPDATE_SORT,
+} from '../../actions'
+import { useProductsContext } from '../productsContext/useProductsContext'
+import type { FilterContextType, FilterProviderProps } from './types'
 
-
-
-import { FilterContextType, FilterProviderProps, FilterState } from "./types";
-import { CLEAR_FILTERS, FILTER_PRODUCTS, LOAD_PRODUCTS, SET_GRIDVIEW, SET_LISTVIEW, SORT_PRODUCTS, UPDATE_FILTERS, UPDATE_SORT } from "../../actions";
-import { createContext, useContext, useEffect, useReducer } from "react";
-import useProductsContext from '../products_context';
-
-
-const initialState: FilterState = {
-	filtered_products: [],
-	all_products: [],
-	grid_view: true,
-	sort: "price-lowest",
-	filters: {
-		text: "",
-		company: "all",
-		category: "all",
-		color: "all",
-		min_price: 0,
-		max_price: 0,
-		price: 0,
-		shipping: false,
-	},
-};
-
-const FilterContext = createContext<FilterContextType | undefined>(undefined);
+const FilterContext = createContext<FilterContextType | undefined>(undefined)
 
 
 export function FilterProvider({ children }: FilterProviderProps) {
 	const { products } = useProductsContext();
-	const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer(reducer, initialFilterState);
 
 	useEffect(() => {
 		dispatch({ type: LOAD_PRODUCTS, payload: products });
@@ -45,7 +37,7 @@ export function FilterProvider({ children }: FilterProviderProps) {
 
 	const updateSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const value = e.target.value;
-		dispatch({ type: UPDATE_SORT, payload: value });
+		dispatch({ type: UPDATE_SORT, payload: value as SortOption });
 	};
 
 	const updateFilters = (
@@ -53,7 +45,7 @@ export function FilterProvider({ children }: FilterProviderProps) {
 			| React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 			| React.MouseEvent<HTMLButtonElement>
 	) => {
-		let name = (e.target as HTMLInputElement).name;
+		const name = (e.target as HTMLInputElement).name;
 		let value: string | number | boolean =
 			(e.target as HTMLInputElement).value;
 

@@ -1,7 +1,5 @@
-export type AddToCartProps = {
-	id: string;
-	stock: number;
-	colors: string[];
+import type { SingleProduct } from '../../types/product'
 
-	[name: string]: any;
-};
+export type AddToCartProps = {
+  product: SingleProduct
+}

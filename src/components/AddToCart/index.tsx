@@ -1,60 +1,45 @@
-import  { useState } from "react";
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { FaCheck } from 'react-icons/fa'
 
-import { Link } from "react-router-dom";
-import { FaCheck } from "react-icons/fa";
+import AmountButtons from '../AmountButtons'
+import { useCartContext } from '../../context/cartContext/useCartContext'
+import { Wrapper } from './styles'
+import type { AddToCartProps } from './types'
 
-import { AddToCartProps } from "./types";
-import { Wrapper } from "./styles";
-import { useCartContext } from "../../context/cartContext/useCartContext";
+export default function AddToCart({ product }: AddToCartProps) {
+  const { addToCart } = useCartContext()
+  const { id, stock, colors } = product
 
-function AddToCart  ({ product }:AddToCartProps)  { 
-  const { addToCart } = useCartContext();
-  const { id, stock, colors } = product;
-  const [mainColorState, setMainColorStateState] = useState(colors[0]);
-  const [amountState, setAmountState] = useState(1);
+  const [mainColor, setMainColor] = useState(colors[0])
+  const [amount, setAmount] = useState(1)
 
   const increase = () => {
-    setAmountState((oldAmount) => {
-      let tempAmount = oldAmount + 1;
-      if (tempAmount > stock) {
-        tempAmount = stock;
-      }
-      return tempAmount;
-    });
-  };
+    setAmount((oldAmount) => Math.min(oldAmount + 1, stock))
+  }
+
   const decrease = () => {
-    setAmountState((oldAmount) => {
-      let tempAmount = oldAmount - 1;
-      if (tempAmount < 1) {
-        tempAmount = 1;
-      }
-      return tempAmount;
-    });
-  };
+    setAmount((oldAmount) => Math.max(oldAmount - 1, 1))
+  }
+
   return (
     <Wrapper>
       <div className="colors">
         <span>colors :</span>
         <div>
-        {colors.map((color: string, index: number) => {
-            const buttonClass = mainColorState === color
-            ? "color-btn active"
-            : "color-btn";
-            const isSelected = mainColorState === color;
-
-          
+          {colors.map((color) => {
+            const isSelected = mainColor === color
             return (
               <button
-                key={index}
+                key={color}
+                type="button"
                 style={{ background: color }}
-                className={`${
-                  mainColorState === buttonClass
-                }`}
-                onClick={() => setMainColorStateState(color)}
+                className={isSelected ? 'color-btn active' : 'color-btn'}
+                onClick={() => setMainColor(color)}
               >
-               {mainColorState === color && <FaCheck />}
+                {isSelected && <FaCheck />}
               </button>
-            );
+            )
           })}
         </div>
       </div>
@@ -62,20 +47,17 @@ function AddToCart  ({ product }:AddToCartProps)  {
         <AmountButtons
           increase={increase}
           decrease={decrease}
-          amount={amountState}
+          amount={amount}
         />
 
         <Link
           to="/cart"
           className="btn"
-          onClick={() => addToCart(id, mainColorState, amountState, product)}
+          onClick={() => addToCart(id, mainColor, amount, product)}
         >
           add to cart
         </Link>
       </div>
     </Wrapper>
-  );
-};
-
-
-export default AddToCart;
+  )
+}
