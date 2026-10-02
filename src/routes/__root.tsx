@@ -6,7 +6,6 @@ import Footer from '../components/Footer'
 import Loading from '../components/Loading'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import { FilterProvider } from '../context/filterContext/useFilterContext'
 import ErrorPage from '../pages/ErrorPage'
 import { productsService } from '../services/products'
 import type { UserContextType } from '../context/userContext'
@@ -56,17 +55,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootLayout() {
-  const { products } = Route.useLoaderData()
-
   return (
     <>
       <Navbar />
       <Sidebar />
-      {/* Dentro da árvore de rotas de propósito: é o que permite ao filtro
-          receber os produtos já carregados, sem buscar de novo. */}
-      <FilterProvider products={products}>
-        <Outlet />
-      </FilterProvider>
+      <Outlet />
       <Footer />
       <Suspense>
         <RouterDevtools position="bottom-right" />

@@ -5,11 +5,6 @@ import { SidebarProvider } from './context/sidebarContext/useSidebarContext'
 import { UserProvider, useUserContext } from './context/userContext'
 import { router } from './router'
 
-/**
- * O FilterProvider saiu daqui: ele precisa dos produtos do loader da rota
- * raiz, e hook de router só funciona dentro do RouterProvider. Ele agora vive
- * em routes/__root.tsx.
- */
 export default function App() {
   return (
     <UserProvider>

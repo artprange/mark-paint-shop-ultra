@@ -1,29 +1,18 @@
 import { FaCheck } from 'react-icons/fa'
 
-import { useFilterContext } from '../../context/filterContext/useFilterContext'
-import { formatPrice, getUniqueValues } from '../../utils/helpers'
+import { useProductFilters } from '../../pages/ProductsPage/useProductFilters'
+import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
 
 export default function Filters() {
-  const {
-    filters: {
-      text,
-      category,
-      company,
-      color,
-      min_price,
-      price,
-      max_price,
-      shipping,
-    },
-    updateFilters,
-    all_products,
-    clearFilters,
-  } = useFilterContext()
+  const { search, options, setSearch, clearFilters } = useProductFilters()
 
-  const categories = getUniqueValues(all_products, 'category')
-  const companies = getUniqueValues(all_products, 'company')
-  const colors = getUniqueValues(all_products, 'colors')
+  // Campo ausente na URL é o padrão. O slider cai no teto do catálogo, e os
+  // seletores em "all".
+  const category = search.category ?? 'all'
+  const company = search.company ?? 'all'
+  const color = search.color ?? 'all'
+  const maxPrice = search.maxPrice ?? options.maxPrice
 
   return (
     <Wrapper>
@@ -32,10 +21,9 @@ export default function Filters() {
           <div className="form-control">
             <input
               type="text"
-              name="text"
-              value={text}
+              value={search.text ?? ''}
               placeholder="buscar"
-              onChange={updateFilters}
+              onChange={(e) => setSearch({ text: e.target.value || undefined })}
               className="search-input"
               aria-label="Buscar produtos"
             />
@@ -44,12 +32,13 @@ export default function Filters() {
           <div className="form-control">
             <h5>categoria</h5>
             <div>
-              {categories.map((item) => (
+              {options.categories.map((item) => (
                 <button
                   key={item}
-                  onClick={updateFilters}
                   type="button"
-                  name="category"
+                  onClick={() =>
+                    setSearch({ category: item === 'all' ? undefined : item })
+                  }
                   className={category === item ? 'active' : undefined}
                 >
                   {item}
@@ -61,13 +50,17 @@ export default function Filters() {
           <div className="form-control">
             <h5>marca</h5>
             <select
-              name="company"
               value={company}
-              onChange={updateFilters}
+              onChange={(e) =>
+                setSearch({
+                  company:
+                    e.target.value === 'all' ? undefined : e.target.value,
+                })
+              }
               className="company"
               aria-label="Filtrar por marca"
             >
-              {companies.map((item) => (
+              {options.companies.map((item) => (
                 <option key={item} value={item}>
                   {item}
                 </option>
@@ -78,14 +71,12 @@ export default function Filters() {
           <div className="form-control">
             <h5>cores</h5>
             <div className="colors">
-              {colors.map((item) =>
+              {options.colors.map((item) =>
                 item === 'all' ? (
                   <button
                     key={item}
                     type="button"
-                    name="color"
-                    onClick={updateFilters}
-                    data-color="all"
+                    onClick={() => setSearch({ color: undefined })}
                     className={color === 'all' ? 'all-btn active' : 'all-btn'}
                   >
                     todos
@@ -94,13 +85,9 @@ export default function Filters() {
                   <button
                     key={item}
                     type="button"
-                    name="color"
                     style={{ background: item }}
-                    className={
-                      color === item ? 'color-btn active' : 'color-btn'
-                    }
-                    data-color={item}
-                    onClick={updateFilters}
+                    className={color === item ? 'color-btn active' : 'color-btn'}
+                    onClick={() => setSearch({ color: item })}
                     aria-label={`Filtrar pela cor ${item}`}
                   >
                     {color === item && <FaCheck />}
@@ -112,14 +99,13 @@ export default function Filters() {
 
           <div className="form-control">
             <h5>preço</h5>
-            <p className="price">{formatPrice(price)}</p>
+            <p className="price">{formatPrice(maxPrice)}</p>
             <input
               type="range"
-              name="price"
-              onChange={updateFilters}
-              min={min_price}
-              max={max_price}
-              value={price}
+              min={0}
+              max={options.maxPrice}
+              value={maxPrice}
+              onChange={(e) => setSearch({ maxPrice: Number(e.target.value) })}
               aria-label="Preço máximo"
             />
           </div>
@@ -128,10 +114,11 @@ export default function Filters() {
             <label htmlFor="shipping">frete grátis</label>
             <input
               type="checkbox"
-              name="shipping"
               id="shipping"
-              checked={shipping}
-              onChange={updateFilters}
+              checked={search.shipping ?? false}
+              onChange={(e) =>
+                setSearch({ shipping: e.target.checked || undefined })
+              }
             />
           </div>
         </form>
