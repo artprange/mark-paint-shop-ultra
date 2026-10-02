@@ -1,20 +1,17 @@
-import { Link } from '@tanstack/react-router'
+import { getRouteApi, Link } from '@tanstack/react-router'
 
-import { useProductsContext } from '../../context/productsContext/useProductsContext'
-import Error from '../Error'
-import Loading from '../Loading'
 import Product from '../Product'
 import { Wrapper } from './styles'
 
-export default function FeaturedProducts() {
-  const {
-    products_loading: loading,
-    products_error: error,
-    featured_products: featured,
-  } = useProductsContext()
+const route = getRouteApi('__root__')
 
-  if (loading) return <Loading />
-  if (error) return <Error />
+export default function FeaturedProducts() {
+  /**
+   * Os destaques vêm do loader da rota raiz. O loading e o erro deixaram de
+   * ser problema deste componente: a rota só renderiza a árvore quando o
+   * loader resolveu, e falha vira o errorComponent da raiz.
+   */
+  const { featured } = route.useLoaderData()
 
   return (
     <Wrapper className="section">

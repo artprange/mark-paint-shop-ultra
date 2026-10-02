@@ -1,13 +1,9 @@
-import { useEffect } from 'react'
-import { getRouteApi, Link, useNavigate } from '@tanstack/react-router'
+import { getRouteApi, Link } from '@tanstack/react-router'
 
 import AddToCart from '../../components/AddToCart'
-import Error from '../../components/Error'
-import Loading from '../../components/Loading'
 import PageHero from '../../components/PageHero'
 import ProductImages from '../../components/ProductImages'
 import Stars from '../../components/Stars'
-import { useProductsContext } from '../../context/productsContext/useProductsContext'
 import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
 
@@ -16,36 +12,14 @@ import { Wrapper } from './styles'
 const route = getRouteApi('/products/$id')
 
 export default function SingleProductPage() {
-  // Tipado pela rota: `id` é string, não string | undefined, porque a
-  // própria definição da rota declara o parâmetro.
-  const { id } = route.useParams()
-  const navigate = useNavigate()
-  const {
-    single_product_loading: loading,
-    single_product_error: error,
-    single_product: product,
-    fetchSingleProduct,
-  } = useProductsContext()
-
-  useEffect(() => {
-    fetchSingleProduct(id)
-    // fetchSingleProduct é recriada a cada render do provider; incluí-la aqui
-    // refaria a busca em loop.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
-
-  useEffect(() => {
-    if (!error) return
-    const timer = setTimeout(() => navigate({ to: '/' }), 3000)
-    // Sem o clear, o redirecionamento dispara mesmo depois de a página sair.
-    return () => clearTimeout(timer)
-  }, [error, navigate])
-
-  if (error) return <Error />
-  // `product` é null até a primeira busca terminar. O código anterior
-  // desestruturava direto e quebrava no primeiro render, quando `loading`
-  // ainda era false porque o efeito não tinha rodado.
-  if (loading || !product) return <Loading />
+  /**
+   * O produto chega pronto do loader da rota. Some tudo que existia aqui
+   * antes: o useEffect que buscava, os estados de loading e erro, o guard
+   * contra produto nulo e o setTimeout que redirecionava em caso de falha.
+   * Quem trata loading e erro agora é a própria rota, por
+   * pendingComponent e errorComponent.
+   */
+  const product = route.useLoaderData()
 
   const {
     name,

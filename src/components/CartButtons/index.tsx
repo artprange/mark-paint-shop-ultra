@@ -1,13 +1,13 @@
 import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa'
 import { Link } from '@tanstack/react-router'
 
-import { useProductsContext } from '../../context/productsContext/useProductsContext'
+import { useSidebarContext } from '../../context/sidebarContext/useSidebarContext'
 import { useCartContext } from '../../context/cartContext/useCartContext'
 import { useUserContext } from '../../context/userContext'
 import { Wrapper } from './styles'
 
 export default function CartButtons() {
-  const { closeSidebar } = useProductsContext()
+  const { closeSidebar } = useSidebarContext()
   const { total_items, clearCart } = useCartContext()
   const { myUser, login, logout } = useUserContext()
 

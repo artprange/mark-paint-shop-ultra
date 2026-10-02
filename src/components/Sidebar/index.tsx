@@ -3,13 +3,13 @@ import { Link } from '@tanstack/react-router'
 
 import logo from '../../assets/logo.png'
 import { links } from '../../utils/constants'
-import { useProductsContext } from '../../context/productsContext/useProductsContext'
+import { useSidebarContext } from '../../context/sidebarContext/useSidebarContext'
 import { useUserContext } from '../../context/userContext'
 import CartButtons from '../CartButtons'
 import { SidebarContainer } from './styles'
 
 export default function Sidebar() {
-  const { isSidebarOpen, closeSidebar } = useProductsContext()
+  const { isSidebarOpen, closeSidebar } = useSidebarContext()
   const { myUser } = useUserContext()
 
   return (

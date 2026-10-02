@@ -13,14 +13,12 @@ import {
   UPDATE_FILTERS,
   UPDATE_SORT,
 } from '../../actions'
-import { useProductsContext } from '../productsContext/useProductsContext'
 import type { FilterContextType, FilterProviderProps } from './types'
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined)
 
 
-export function FilterProvider({ children }: FilterProviderProps) {
-	const { products } = useProductsContext();
+export function FilterProvider({ children, products }: FilterProviderProps) {
 	const [state, dispatch] = useReducer(reducer, initialFilterState);
 
 	useEffect(() => {

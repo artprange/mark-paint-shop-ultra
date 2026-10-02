@@ -1,25 +1,23 @@
 import { RouterProvider } from '@tanstack/react-router'
 
 import { CartProvider } from './context/cartContext/useCartContext'
-import { FilterProvider } from './context/filterContext/useFilterContext'
-import { ProductsProvider } from './context/productsContext/useProductsContext'
+import { SidebarProvider } from './context/sidebarContext/useSidebarContext'
 import { UserProvider, useUserContext } from './context/userContext'
 import { router } from './router'
 
 /**
- * A ordem dos providers importa: FilterProvider lê `products` do
- * ProductsProvider, então precisa estar dentro dele.
+ * O FilterProvider saiu daqui: ele precisa dos produtos do loader da rota
+ * raiz, e hook de router só funciona dentro do RouterProvider. Ele agora vive
+ * em routes/__root.tsx.
  */
 export default function App() {
   return (
     <UserProvider>
-      <ProductsProvider>
-        <FilterProvider>
-          <CartProvider>
-            <RouterWithAuth />
-          </CartProvider>
-        </FilterProvider>
-      </ProductsProvider>
+      <SidebarProvider>
+        <CartProvider>
+          <RouterWithAuth />
+        </CartProvider>
+      </SidebarProvider>
     </UserProvider>
   )
 }
