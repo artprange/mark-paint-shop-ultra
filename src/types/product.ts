@@ -28,7 +28,12 @@ export type SingleProduct = Omit<Product, 'image'> & {
 
 export type CartItem = {
   /** `${productId}${color}` — o mesmo produto em cores diferentes vira linhas distintas. */
-  id: string;
+  id: string
+  /**
+   * O id do produto, separado do id da linha. O backend precisa dele para
+   * reconsultar o preço na origem em vez de confiar no que o cliente manda.
+   */
+  productId: string;
   name: string;
   color: string;
   amount: number;

@@ -55,6 +55,7 @@ export default function cart_reducer(
 
       const newItem: CartItem = {
         id: cartId,
+        productId: id,
         name: product.name,
         color,
         amount,

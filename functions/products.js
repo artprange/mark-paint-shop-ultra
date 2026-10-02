@@ -1,53 +1,13 @@
-const dotenv = require("dotenv");
-dotenv.config();
-const Airtable = require("airtable-node");
+import { getTable, json, toListItem } from './_lib/airtable.js'
 
-const airtable = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY })
-  .base(process.env.AIRTABLE_BASE)
-  .table(process.env.AIRTABLE_TABLE);
-
-exports.handler = async (event, context, cb) => {
+export async function handler() {
   try {
-    const response = await airtable.list({ maxRecords: 200 });
-
-    const products = response.records.map((product) => {
-      const { id, fields } = product;
-      const {
-        name,
-        featured,
-        price,
-        colors,
-        company,
-        description,
-        category,
-        shipping,
-        images,
-      } = fields;
-
-      const { url } = images[0];
-      return {
-        id,
-        featured,
-        name,
-        price,
-        colors,
-        company,
-        description,
-        category,
-        shipping,
-        image: url,
-      };
-    });
-    console.log(products);
-    return {
-      statusCode: 200,
-      body: JSON.stringify(products),
-    };
+    const response = await getTable().list({ maxRecords: 200 })
+    // O console.log do catálogo inteiro foi removido: enchia os logs do
+    // Netlify a cada requisição sem nenhum ganho.
+    return json(200, response.records.map(toListItem))
   } catch (error) {
-    console.log(error);
-    return {
-      statusCode: 500,
-      body: "there was an error",
-    };
+    console.error('Falha ao listar produtos:', error.message)
+    return json(500, { error: 'Não foi possível carregar os produtos' })
   }
-};
+}
