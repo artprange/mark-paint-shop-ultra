@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "functions"
+
+# A aplicação é uma SPA: qualquer rota precisa cair no index.html, senão
+# recarregar /products direto no navegador devolve 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
