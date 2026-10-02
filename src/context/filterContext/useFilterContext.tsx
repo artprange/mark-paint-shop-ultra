@@ -45,25 +45,27 @@ export function FilterProvider({ children }: FilterProviderProps) {
 			| React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 			| React.MouseEvent<HTMLButtonElement>
 	) => {
-		const name = (e.target as HTMLInputElement).name;
-		let value: string | number | boolean =
-			(e.target as HTMLInputElement).value;
+		// currentTarget, não target: num clique no <svg> do check dentro do
+		// botão de cor, target é o svg e o data-color volta nulo.
+		const element = e.currentTarget as HTMLInputElement
+		const name = element.name
+		let value: string | number | boolean = element.value
 
 		if (name === "category") {
-			value = (e.target as HTMLElement).textContent || "all";
+			value = element.textContent?.trim() || "all"
 		}
 		if (name === "color") {
-			value = (e.target as HTMLElement).getAttribute("data-color") || "all";
+			value = element.getAttribute("data-color") || "all"
 		}
 		if (name === "price") {
-			value = Number(value);
+			value = Number(value)
 		}
 		if (name === "shipping") {
-			value = (e.target as HTMLInputElement).checked;
+			value = element.checked
 		}
 
-		dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
-	};
+		dispatch({ type: UPDATE_FILTERS, payload: { name, value } })
+	}
 
 	const clearFilters = () => dispatch({ type: CLEAR_FILTERS });
 

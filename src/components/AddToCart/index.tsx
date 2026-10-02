@@ -25,7 +25,7 @@ export default function AddToCart({ product }: AddToCartProps) {
   return (
     <Wrapper>
       <div className="colors">
-        <span>colors :</span>
+        <span>cores :</span>
         <div>
           {colors.map((color) => {
             const isSelected = mainColor === color
@@ -55,7 +55,7 @@ export default function AddToCart({ product }: AddToCartProps) {
           className="btn"
           onClick={() => addToCart(id, mainColor, amount, product)}
         >
-          add to cart
+          adicionar ao carrinho
         </Link>
       </div>
     </Wrapper>
