@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { getRouteApi, Link, useNavigate } from '@tanstack/react-router'
 
 import AddToCart from '../../components/AddToCart'
 import Error from '../../components/Error'
@@ -11,8 +11,14 @@ import { useProductsContext } from '../../context/productsContext/useProductsCon
 import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
 
+// getRouteApi em vez de importar a Route do arquivo de rota: aquele arquivo
+// importa esta página, e o import de volta fecharia um ciclo.
+const route = getRouteApi('/products/$id')
+
 export default function SingleProductPage() {
-  const { id } = useParams<{ id: string }>()
+  // Tipado pela rota: `id` é string, não string | undefined, porque a
+  // própria definição da rota declara o parâmetro.
+  const { id } = route.useParams()
   const navigate = useNavigate()
   const {
     single_product_loading: loading,
@@ -22,7 +28,7 @@ export default function SingleProductPage() {
   } = useProductsContext()
 
   useEffect(() => {
-    if (id) fetchSingleProduct(id)
+    fetchSingleProduct(id)
     // fetchSingleProduct é recriada a cada render do provider; incluí-la aqui
     // refaria a busca em loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,7 +36,7 @@ export default function SingleProductPage() {
 
   useEffect(() => {
     if (!error) return
-    const timer = setTimeout(() => navigate('/'), 3000)
+    const timer = setTimeout(() => navigate({ to: '/' }), 3000)
     // Sem o clear, o redirecionamento dispara mesmo depois de a página sair.
     return () => clearTimeout(timer)
   }, [error, navigate])

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 
 import { useProductsContext } from '../../context/productsContext/useProductsContext'
 import Error from '../Error'

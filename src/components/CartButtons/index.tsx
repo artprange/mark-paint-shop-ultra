@@ -1,5 +1,5 @@
 import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 
 import { useProductsContext } from '../../context/productsContext/useProductsContext'
 import { useCartContext } from '../../context/cartContext/useCartContext'

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 
 import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
@@ -20,7 +20,7 @@ export default function ListView({ products }: ProductGridProps) {
             <h4>{name}</h4>
             <h5 className="price">{formatPrice(price)}</h5>
             <p>{excerpt(description)}</p>
-            <Link to={`/products/${id}`} className="btn">
+            <Link to="/products/$id" params={{ id }} className="btn">
               detalhes
             </Link>
           </div>
