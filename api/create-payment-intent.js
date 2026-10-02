@@ -2,7 +2,18 @@ import Stripe from 'stripe'
 
 import { getTable, toSingleProduct } from './_lib/airtable.js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+/**
+ * Instanciada sob demanda, não no corpo do módulo: o construtor da Stripe
+ * lança quando a chave não existe, e esta instalação sobe sem credencial por
+ * padrão. No topo do arquivo, isso derrubaria a função já no cold start.
+ */
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY
+  if (!key) {
+    throw new Error('STRIPE_SECRET_KEY não configurada')
+  }
+  return new Stripe(key)
+}
 
 /** Mesmo valor de `shipping_fee` em src/context/cartContext. Em centavos. */
 const SHIPPING_FEE = 534
@@ -66,7 +77,7 @@ export default async function handler(request, response) {
     // partir do total que o cliente manda.
     const amount = await calculateOrderAmount(cart)
 
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntent = await getStripe().paymentIntents.create({
       amount,
       currency: 'brl',
       automatic_payment_methods: { enabled: true },
