@@ -3,7 +3,7 @@
 Loja da Mark Paint Shop — preparação e pintura de rodas, pinças, quadros,
 capacetes e componentes de motor.
 
-React 19 + TypeScript + Vite, styled-components, React Router.
+React 19 + TypeScript + Vite, TanStack Router, styled-components.
 
 ## Rodando
 
@@ -21,6 +21,7 @@ necessária.
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` | Checagem de tipos (`tsc -b`) e build de produção |
 | `npm run lint` | ESLint |
+| `npm test` | Testes (Vitest) |
 | `npm run preview` | Serve o build local |
 
 ## Ligando os serviços reais
@@ -38,10 +39,25 @@ As variáveis sem prefixo `VITE_` (`AIRTABLE_*`, `STRIPE_SECRET_KEY`) são do
 back-end e nunca chegam ao navegador. **A chave secreta da Stripe não pode
 levar o prefixo `VITE_`** — isso a publicaria no bundle.
 
+## Filtros na URL
+
+Os filtros da listagem vivem na query string, não em estado de componente:
+
+```
+/products?category=freios&sort=price-highest&view=list
+```
+
+Uma busca filtrada é um link — dá para compartilhar, favoritar, recarregar e
+voltar pelo histórico. A query string é validada na entrada da rota
+(`validateProductSearch`): como é o usuário quem pode editá-la, um valor
+inválido vira o padrão em vez de erro. Parâmetro ausente significa valor
+padrão, então a URL só carrega o que foi mexido de fato.
+
 ## Estrutura
 
 ```
 src/
+  routes/              árvore de rotas (file-based); gera routeTree.gen.ts
   components/<Nome>/   index.tsx, styles.ts, types.ts
   pages/<Nome>/        index.tsx, styles.ts
   context/<nome>/      provider + hook tipados
@@ -50,6 +66,18 @@ src/
   types/               tipos de domínio compartilhados
 functions/             Netlify Functions (Airtable, Stripe)
 ```
+
+`src/routes` só declara rotas e aponta para as páginas; os componentes
+continuam em `src/pages`. `routeTree.gen.ts` é gerado pelo plugin do Vite e
+vai para o repositório de propósito — `npm run build` roda `tsc -b` antes do
+vite, então num clone limpo o typecheck falharia sem ele.
+
+### Dados nos loaders
+
+O catálogo é carregado no loader da rota raiz e o produto único no loader de
+`/products/$id`. Os dados chegam resolvidos antes do primeiro render, então
+não há estado de loading espalhado pelos componentes: quem trata espera e
+falha é a própria rota, por `pendingComponent` e `errorComponent`.
 
 ### A camada de serviços
 
@@ -61,8 +89,29 @@ presença das variáveis de ambiente.
 É isso que permite rodar a aplicação inteira sem credencial, e trocar de
 provedor sem tocar em componente.
 
+## Testes
+
+```bash
+npm test
+```
+
+Cobrem a lógica pura: validação dos filtros da URL, aplicação de filtros e
+ordenação, e o reducer do carrinho. São as partes onde um erro é silencioso —
+um filtro que devolve a lista errada ou um carrinho que ultrapassa o estoque
+não quebram a tela, só entregam o resultado errado.
+
 ## Deploy
 
-`netlify.toml` já declara build, publish e a pasta de functions, além do
-redirect de SPA. As variáveis de ambiente são configuradas no painel do
-Netlify — tanto as `VITE_*` (usadas no build) quanto as do back-end.
+`netlify.toml` já declara build, publish, a pasta de functions, a versão do
+Node e o redirect de SPA. As variáveis de ambiente são configuradas no painel
+do Netlify — tanto as `VITE_*` (usadas no build) quanto as do back-end.
+
+Sem nenhuma variável configurada o site publicado funciona: catálogo local,
+login simulado e checkout simulado. É proposital — o deploy não depende de
+credencial para ser visitável.
+
+### Imagens
+
+As fotos de produto são servidas em WebP, redimensionadas para 1200px no lado
+maior. Os originais eram PNG de câmera de celular somando 57 MB; a página de
+produtos sozinha carregava mais de 50 MB. Hoje o deploy inteiro tem 3 MB.

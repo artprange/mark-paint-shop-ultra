@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from '@tanstack/react-router'
 
 import { useCartContext } from '../../context/cartContext/useCartContext'
 import { useUserContext } from '../../context/userContext'
@@ -25,7 +25,7 @@ export default function MockCheckout() {
     if (!succeeded) return
     const timer = setTimeout(() => {
       clearCart()
-      navigate('/')
+      navigate({ to: '/' })
     }, REDIRECT_DELAY_MS)
     return () => clearTimeout(timer)
   }, [succeeded, clearCart, navigate])

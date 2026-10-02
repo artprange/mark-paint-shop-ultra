@@ -1,9 +1,32 @@
-import { useAuth0 } from '@auth0/auth0-react'
+import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
 
 import { UserContext } from './context'
 import type { AppUser, UserProviderProps } from './types'
 
-export function Auth0UserProvider({ children }: UserProviderProps) {
+type Auth0StackProps = UserProviderProps & {
+  domain: string
+  clientId: string
+}
+
+/**
+ * O Auth0Provider e o adaptador para o nosso UserContext ficam no mesmo
+ * módulo para que um único import dinâmico traga os dois — e para que o SDK
+ * não entre no bundle principal.
+ */
+export function Auth0Stack({ domain, clientId, children }: Auth0StackProps) {
+  return (
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{ redirect_uri: window.location.origin }}
+      cacheLocation="localstorage"
+    >
+      <Auth0UserProvider>{children}</Auth0UserProvider>
+    </Auth0Provider>
+  )
+}
+
+function Auth0UserProvider({ children }: UserProviderProps) {
   const { loginWithRedirect, logout, user, isLoading, error } = useAuth0()
 
   const myUser: AppUser | null = user

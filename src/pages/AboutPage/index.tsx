@@ -1,5 +1,5 @@
 import PageHero from '../../components/PageHero'
-import aboutImg from '../../assets/markCofre.png'
+import aboutImg from '../../assets/markCofre.webp'
 import { Wrapper } from './styles'
 
 export default function AboutPage() {

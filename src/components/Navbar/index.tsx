@@ -1,15 +1,15 @@
 import { FaBars } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.webp'
 import { links } from '../../utils/constants'
-import { useProductsContext } from '../../context/productsContext/useProductsContext'
+import { useSidebarContext } from '../../context/sidebarContext/useSidebarContext'
 import { useUserContext } from '../../context/userContext'
 import CartButtons from '../CartButtons'
 import { NavContainer } from './styles'
 
 export default function Navbar() {
-  const { openSidebar } = useProductsContext()
+  const { openSidebar } = useSidebarContext()
   const { myUser } = useUserContext()
 
   return (

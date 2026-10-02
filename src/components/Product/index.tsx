@@ -1,5 +1,5 @@
 import { FaSearch } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 
 import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
@@ -10,7 +10,12 @@ export default function Product({ image, name, price, id }: ProductCardProps) {
     <Wrapper>
       <div className="container">
         <img src={image} alt={name} />
-        <Link to={`/products/${id}`} className="link" aria-label={`Ver ${name}`}>
+        <Link
+          to="/products/$id"
+          params={{ id }}
+          className="link"
+          aria-label={`Ver ${name}`}
+        >
           <FaSearch />
         </Link>
       </div>

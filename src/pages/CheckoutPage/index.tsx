@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 
 import Checkout from '../../components/Checkout'
 import PageHero from '../../components/PageHero'
