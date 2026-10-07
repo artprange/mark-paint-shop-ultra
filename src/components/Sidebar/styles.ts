@@ -51,6 +51,7 @@ export const SidebarContainer = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
+    overflow-y: auto;
     background: #232728;
     transition: var(--transition);
     transform: translate(-100%);
@@ -62,6 +63,7 @@ export const SidebarContainer = styled.div`
   }
   .cart-btn-wrapper {
     margin: 2rem auto;
+    justify-content: center;
   }
   @media screen and (min-width: 992px) {
     .sidebar {

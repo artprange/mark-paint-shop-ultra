@@ -17,7 +17,8 @@ export const NavContainer = styled.nav`
     justify-content: space-between;
     img {
       width: 105px;
-      margin-top: 45px;
+      max-height: 4.5rem;
+      object-fit: contain;
     }
   }
   .nav-toggle {
@@ -63,7 +64,7 @@ export const NavContainer = styled.nav`
       }
     }
     .cart-btn-wrapper {
-      display: grid;
+      display: flex;
     }
   }
 `

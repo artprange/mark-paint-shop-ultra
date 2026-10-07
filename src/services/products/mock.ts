@@ -2,17 +2,12 @@ import { CATALOG } from './catalog'
 import { ProductNotFoundError, type ProductsService } from './types'
 import type { Product, SingleProduct } from '../../types/product'
 
-/** Latência artificial, para os estados de loading aparecerem de verdade. */
 const DELAY_MS = 300
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-/**
- * A listagem devolve o shape achatado — uma `image` só —, igual ao que a
- * function da Airtable monta a partir de `fields.images[0].url`.
- */
 function toListItem(product: SingleProduct): Product {
   const { images, ...shared } = product
   return {

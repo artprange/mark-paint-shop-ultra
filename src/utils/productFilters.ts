@@ -25,11 +25,6 @@ const SORTERS: Record<SortOption, (a: Product, b: Product) => number> = {
   'name-z': (a, b) => b.name.localeCompare(a.name),
 }
 
-/**
- * Os filtros como vivem na URL. Tudo opcional de propósito: um campo ausente
- * é o valor padrão, então a URL só carrega o que o usuário mexeu de fato —
- * `/products?category=freios` em vez de arrastar os oito parâmetros sempre.
- */
 export type ProductSearch = {
   text?: string
   category?: string
@@ -45,15 +40,6 @@ function asString(value: unknown): string | undefined {
   return typeof value === 'string' && value.length > 0 ? value : undefined
 }
 
-/**
- * Valida o que vem da query string. É a fronteira: a URL é editável pelo
- * usuário, então nada aqui pode confiar no formato. Um valor inválido vira
- * `undefined`, isto é, o padrão — nunca um erro de navegação.
- *
- * Escrito à mão em vez de com Zod: é um schema só, e assim o projeto não
- * ganha uma dependência (mais o adapter) por causa dele. Trocar por Zod
- * depois é substituir esta função.
- */
 export function validateProductSearch(search: Record<string, unknown>): ProductSearch {
   const sort = asString(search.sort)
   const view = asString(search.view)
@@ -73,16 +59,11 @@ export function validateProductSearch(search: Record<string, unknown>): ProductS
   }
 }
 
-/** Maior preço do catálogo — o teto do slider. */
 export function catalogMaxPrice(products: Product[]): number {
-  // Math.max() sem argumentos devolve -Infinity.
+
   return products.length ? Math.max(...products.map((p) => p.price)) : 0
 }
 
-/**
- * Valores distintos de um campo, com 'all' na frente. `colors` é array por
- * produto, então precisa ser achatado antes.
- */
 export function uniqueValues<K extends keyof Product>(
   products: Product[],
   field: K,
@@ -95,7 +76,6 @@ export function uniqueValues<K extends keyof Product>(
   return ['all', ...new Set(values)]
 }
 
-/** Aplica filtros e ordenação. Pura: mesma entrada, mesma saída. */
 export function applyProductSearch(
   products: Product[],
   search: ProductSearch,
@@ -122,6 +102,5 @@ export function applyProductSearch(
     result = result.filter((p) => p.shipping)
   }
 
-  // Cópia antes do sort: Array.sort ordena no lugar e mutaria a lista do loader.
   return [...result].sort(SORTERS[search.sort ?? DEFAULT_SORT])
 }

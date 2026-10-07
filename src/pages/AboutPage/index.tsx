@@ -6,8 +6,7 @@ export default function AboutPage() {
   return (
     <main>
       <PageHero title="sobre" />
-      {/* Era "page sction section-center" — a classe section estava escrita
-          errada e nunca aplicava. */}
+
       <Wrapper className="page section section-center">
         <img src={aboutImg} alt="Peça pintada em azul mica" />
         <article>

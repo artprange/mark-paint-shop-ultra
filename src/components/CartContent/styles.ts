@@ -4,6 +4,8 @@ export const Wrapper = styled.section`
   .link-container {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin-top: 2rem;
   }
   .link-btn {

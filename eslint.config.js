@@ -9,8 +9,6 @@ export default tseslint.config(
     ignores: [
       'dist',
       'node_modules',
-      // As funções em api/ rodam em Node, não no navegador: os globals e o
-      // parser deste config são do front.
       'api/**/*.js',
     ],
   },

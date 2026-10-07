@@ -6,8 +6,7 @@ import CheckoutPage from '../pages/CheckoutPage'
 
 export const Route = createFileRoute('/checkout')({
   beforeLoad: ({ context }) => {
-    // Enquanto o Auth0 restaura a sessão `myUser` ainda é null; redirecionar
-    // nesse momento expulsaria quem está logado. A espera fica no componente.
+
     if (context.auth.isLoading) return
 
     if (!context.auth.myUser) {

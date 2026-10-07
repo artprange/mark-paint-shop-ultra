@@ -8,7 +8,7 @@ export const Wrapper = styled.article`
     display: none;
   }
   display: grid;
-  grid-template-columns: 200px auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   grid-template-rows: 75px;
   gap: 3rem 1rem;
   justify-items: center;
@@ -17,7 +17,8 @@ export const Wrapper = styled.article`
   .title {
     grid-template-rows: 75px;
     display: grid;
-    grid-template-columns: 75px 125px;
+    grid-template-columns: 60px minmax(0, 1fr);
+    width: 100%;
     align-items: center;
     text-align: left;
     gap: 1rem;
@@ -107,13 +108,13 @@ export const Wrapper = styled.article`
         height: 0.75rem;
       }
     }
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    grid-template-columns: minmax(180px, 2fr) repeat(3, minmax(0, 1fr)) auto;
     align-items: center;
     grid-template-rows: 75px;
     .title {
       height: 100%;
       display: grid;
-      grid-template-columns: 100px 200px;
+      grid-template-columns: 75px minmax(0, 1fr);
       align-items: center;
       gap: 1rem;
       text-align: left;

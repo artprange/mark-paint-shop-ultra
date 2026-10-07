@@ -9,8 +9,7 @@ export const Wrapper = styled.section`
   }
   .search-input,
   .company {
-    /* Fundo claro em tema escuro: o texto precisa ser escuro explicitamente,
-       senão herda a cor clara do body e some. */
+
     background: var(--clr-grey-10);
     color: var(--clr-grey-1);
     border-radius: var(--radius);
@@ -72,8 +71,7 @@ export const Wrapper = styled.section`
     margin-right: 0.5rem;
     opacity: 0.5;
   }
-  /* Era '.all-btn .active' — seletor descendente, nunca casava: a classe
-     está no próprio botão, não num filho. */
+
   .all-btn.active {
     text-decoration: underline;
   }

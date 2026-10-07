@@ -10,8 +10,7 @@ export const Route = createFileRoute('/products/$id')({
     try {
       return await productsService.getProduct(params.id)
     } catch (error) {
-      // Um id que não existe é 404, não falha de carregamento: separar os dois
-      // é o que permite mostrar telas diferentes para cada caso.
+
       if (error instanceof ProductNotFoundError) throw notFound()
       throw error
     }

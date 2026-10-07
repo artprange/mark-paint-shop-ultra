@@ -8,11 +8,6 @@ type SidebarContextType = {
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined)
 
-/**
- * Isto era o productsContext, que misturava o estado do menu lateral com o
- * carregamento do catálogo. Os produtos passaram para os loaders das rotas e
- * sobrou o que sempre foi: um booleano de UI.
- */
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 

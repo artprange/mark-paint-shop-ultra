@@ -8,7 +8,8 @@ export const Wrapper = styled.section`
     display: none;
   }
   h1 {
-    font-size: 4.5rem;
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+    overflow-wrap: anywhere;
   }
 
   p {
@@ -19,7 +20,8 @@ export const Wrapper = styled.section`
     font-size: 1rem;
   }
   @media (min-width: 992px) {
-    height: calc(100vh - 5rem);
+    min-height: calc(100vh - 5rem);
+    padding: 3rem 0;
     grid-template-columns: 1fr 1fr;
     gap: 8rem;
     h1 {

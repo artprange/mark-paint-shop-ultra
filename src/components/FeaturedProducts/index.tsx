@@ -6,11 +6,7 @@ import { Wrapper } from './styles'
 const route = getRouteApi('__root__')
 
 export default function FeaturedProducts() {
-  /**
-   * Os destaques vêm do loader da rota raiz. O loading e o erro deixaram de
-   * ser problema deste componente: a rota só renderiza a árvore quando o
-   * loader resolveu, e falha vira o errorComponent da raiz.
-   */
+
   const { featured } = route.useLoaderData()
 
   return (

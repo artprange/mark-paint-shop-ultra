@@ -1,40 +1,49 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.footer`
-  height: 5rem;
+  min-height: 5rem;
+  padding: 1.5rem 5%;
   display: flex;
   justify-content: center;
   align-items: center;
   background: var(--clr-black);
   text-align: center;
 
+  .credits,
+  .social-links,
+  .copyright {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+  }
   .credits {
     color: var(--clr-white);
-    margin: 0.1rem;
     font-weight: 400;
-    text-transform: none;
-    line-height: 1.25;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    line-height: 1.5;
     font-size: 0.9rem;
   }
-
-  span {
-    padding: 1.5rem;
+  .copyright {
+    column-gap: 0.75rem;
   }
-
-  @media (min-width: 776px) {
-    flex-direction: row;
+  @media (max-width: 575px) {
+    .credits,
+    .copyright {
+      flex-direction: column;
+    }
   }
 `
 
 export const SocialLink = styled.a`
   color: #ff5e00f1;
-  text-decoration: none;
-  padding-right: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
 
   &:hover {
-    text-decoration: underline;
+    color: var(--clr-white);
   }
 `

@@ -17,8 +17,7 @@ function getLocalStorage(): CartItem[] {
     const cart = localStorage.getItem(CART_STORAGE_KEY)
     return cart ? (JSON.parse(cart) as CartItem[]) : []
   } catch {
-    // JSON corrompido ou localStorage indisponível (modo privado, SSR):
-    // começar com carrinho vazio é melhor que derrubar a aplicação inteira.
+
     return []
   }
 }

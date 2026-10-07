@@ -6,7 +6,7 @@ export const Wrapper = styled.section`
   align-items: center;
   margin-bottom: 2rem;
   column-gap: 2rem;
-  @media (max-width: 576px) {
+  @media (max-width: 1169px) {
     display: grid;
     grid-template-columns: 1fr;
     row-gap: 0.75rem;
@@ -32,7 +32,7 @@ export const Wrapper = styled.section`
     column-gap: 0.5rem;
     button {
       background: transparent;
-      /* O tema é escuro: borda e ícone pretos ficavam invisíveis. */
+
       border: 1px solid var(--clr-grey-7);
       color: var(--clr-grey-7);
       width: 1.5rem;

@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
   align-items: center;
-  width: 225px;
+  width: max-content;
+  max-width: 100%;
 
   .cart-btn {
     color: #ffffff48;
@@ -12,6 +14,8 @@ export const Wrapper = styled.div`
     letter-spacing: var(--spacing);
     display: flex;
     align-items: center;
+    min-height: 2.75rem;
+    white-space: nowrap;
   }
   .cart-container {
     display: flex;
@@ -27,8 +31,7 @@ export const Wrapper = styled.div`
     top: -8px;
     right: -12px;
     background: #ff5e00f1;
-    /* width/height fixos com padding de 12px se contradiziam: o badge
-       inflava para 40px e invadia o botão de login ao lado. */
+
     min-width: 1.25rem;
     height: 1.25rem;
     padding: 0 0.25rem;

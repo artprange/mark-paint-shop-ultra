@@ -8,11 +8,6 @@ import { Wrapper } from './styles'
 
 const REDIRECT_DELAY_MS = 5000
 
-/**
- * Checkout simulado, usado quando a Stripe não está configurada. Não cobra
- * nada e não fala com backend nenhum — só exercita o fluxo de "finalizou a
- * compra" para a aplicação rodar ponta a ponta sem credencial.
- */
 export default function MockCheckout() {
   const { total_amount, shipping_fee, clearCart } = useCartContext()
   const { myUser } = useUserContext()
