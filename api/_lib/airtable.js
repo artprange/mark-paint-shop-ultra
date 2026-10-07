@@ -1,15 +1,5 @@
 import Airtable from 'airtable-node'
 
-/**
- * Acesso à Airtable compartilhado pelas funções de API.
- *
- * As variáveis vêm do ambiente da Vercel em produção e de um .env local em
- * desenvolvimento (o `vercel dev` carrega o arquivo sozinho — não é preciso
- * chamar dotenv aqui).
- *
- * O prefixo `_` tira este diretório da lista de rotas: a Vercel não publica
- * como endpoint nada que comece com underscore dentro de api/.
- */
 const { AIRTABLE_API_KEY, AIRTABLE_BASE, AIRTABLE_TABLE } = process.env
 
 export function getTable() {
@@ -24,7 +14,6 @@ export function getTable() {
     .table(AIRTABLE_TABLE)
 }
 
-/** Shape achatado da listagem: só a primeira imagem, em `image`. */
 export function toListItem({ id, fields }) {
   const {
     name,
@@ -52,7 +41,6 @@ export function toListItem({ id, fields }) {
   }
 }
 
-/** Shape completo do detalhe: todas as imagens, estoque e avaliações. */
 export function toSingleProduct({ id, fields }) {
   const {
     name,

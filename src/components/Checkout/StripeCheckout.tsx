@@ -15,8 +15,6 @@ import { paymentService, stripePublicKey } from '../../services/payment'
 import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
 
-// loadStripe fora do componente: recarregar o script a cada render é
-// desperdício e a Stripe recomenda uma única instância.
 const stripePromise = loadStripe(stripePublicKey)
 
 const REDIRECT_DELAY_MS = 10000
@@ -56,8 +54,7 @@ function CheckoutForm() {
         if (!cancelled) setClientSecret(clientSecret)
       })
       .catch(() => {
-        // O código anterior engolia a falha em silêncio e o botão ficava
-        // inerte sem explicação.
+
         if (!cancelled) {
           setError('Não foi possível iniciar o pagamento. Tente novamente.')
         }
@@ -66,7 +63,7 @@ function CheckoutForm() {
     return () => {
       cancelled = true
     }
-    // Montar um intent por entrada no checkout; o carrinho não muda aqui.
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

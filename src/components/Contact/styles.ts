@@ -11,10 +11,10 @@ export const Wrapper = styled.section`
     color: #ffffff48;
   }
   .contact-form {
-    width: 90vw;
+    width: 100%;
     max-width: 500px;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .form-input,
@@ -24,6 +24,7 @@ export const Wrapper = styled.section`
     border: 2px solid var(--clr-black);
   }
   .form-input {
+    min-width: 0;
     border-right: none;
     color: var(--clr-grey-3);
     border-top-left-radius: var(--radius);

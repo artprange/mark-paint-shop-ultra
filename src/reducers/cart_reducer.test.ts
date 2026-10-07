@@ -51,15 +51,14 @@ describe('cart_reducer', () => {
   })
 
   it('guarda productId separado do id da linha', () => {
-    // O backend recalcula o preço na origem e precisa do id do produto; o id
-    // da linha é produtoId + cor e não serve para consultar.
+
     expect(adicionar(vazio, '#30d5c8', 1).cart[0].productId).toBe('pinca-brembo')
   })
 
   it('somar a mesma cor respeita o estoque', () => {
     const state = adicionar(adicionar(vazio, '#30d5c8', 2), '#30d5c8', 5)
     expect(state.cart).toHaveLength(1)
-    expect(state.cart[0].amount).toBe(3) // stock, não 7
+    expect(state.cart[0].amount).toBe(3)
   })
 
   it('incrementar não passa do estoque e decrementar não vai abaixo de 1', () => {

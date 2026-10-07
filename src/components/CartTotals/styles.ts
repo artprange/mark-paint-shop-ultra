@@ -7,13 +7,15 @@ export const Wrapper = styled.section`
   article {
     border: 1px solid var(--clr-grey-5);
     border-radius: var(--radius);
-    padding: 1.5rem 3rem;
+    padding: 1.5rem clamp(1rem, 4vw, 3rem);
+    max-width: 100%;
   }
   h4,
   h5,
   p {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
   }
   p {
     text-transform: capitalize;

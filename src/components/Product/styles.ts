@@ -43,7 +43,9 @@ export const Wrapper = styled.article`
     margin-top: 1rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+    flex-wrap: wrap;
   }
   footer h5,
   footer p {

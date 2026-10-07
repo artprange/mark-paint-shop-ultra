@@ -7,18 +7,10 @@ import Stars from '../../components/Stars'
 import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
 
-// getRouteApi em vez de importar a Route do arquivo de rota: aquele arquivo
-// importa esta página, e o import de volta fecharia um ciclo.
 const route = getRouteApi('/products/$id')
 
 export default function SingleProductPage() {
-  /**
-   * O produto chega pronto do loader da rota. Some tudo que existia aqui
-   * antes: o useEffect que buscava, os estados de loading e erro, o guard
-   * contra produto nulo e o setTimeout que redirecionava em caso de falha.
-   * Quem trata loading e erro agora é a própria rota, por
-   * pendingComponent e errorComponent.
-   */
+
   const product = route.useLoaderData()
 
   const {

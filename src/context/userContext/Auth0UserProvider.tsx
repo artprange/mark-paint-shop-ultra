@@ -8,11 +8,6 @@ type Auth0StackProps = UserProviderProps & {
   clientId: string
 }
 
-/**
- * O Auth0Provider e o adaptador para o nosso UserContext ficam no mesmo
- * módulo para que um único import dinâmico traga os dois — e para que o SDK
- * não entre no bundle principal.
- */
 export function Auth0Stack({ domain, clientId, children }: Auth0StackProps) {
   return (
     <Auth0Provider
@@ -44,8 +39,7 @@ function Auth0UserProvider({ children }: UserProviderProps) {
         isLoading,
         error: error ?? null,
         login: () => void loginWithRedirect(),
-        // auth0-react v2 moveu returnTo para dentro de logoutParams; no v1 era
-        // no nível de cima, e passar no formato antigo é silenciosamente ignorado.
+
         logout: () =>
           void logout({ logoutParams: { returnTo: window.location.origin } }),
       }}

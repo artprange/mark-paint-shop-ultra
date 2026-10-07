@@ -24,20 +24,23 @@ export default function Footer() {
   return (
     <Wrapper>
       <div className="credits">
-        {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-          <SocialLink
-            key={label}
-            href={href}
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label={label}
-          >
-            <Icon />
-          </SocialLink>
-        ))}
-        {new Date().getFullYear()}
-        <span>Mark Paint Shop</span>
-        Todos os direitos reservados
+        <div className="social-links">
+          {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+            <SocialLink
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={label}
+            >
+              <Icon />
+            </SocialLink>
+          ))}
+        </div>
+        <div className="copyright">
+          <span>{new Date().getFullYear()} Mark Paint Shop</span>
+          <span>Todos os direitos reservados</span>
+        </div>
       </div>
     </Wrapper>
   )

@@ -2,16 +2,16 @@ import Stripe from 'stripe'
 
 import { getTable, toSingleProduct } from './_lib/airtable.js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY
+  if (!key) {
+    throw new Error('STRIPE_SECRET_KEY não configurada')
+  }
+  return new Stripe(key)
+}
 
-/** Mesmo valor de `shipping_fee` em src/context/cartContext. Em centavos. */
 const SHIPPING_FEE = 534
 
-/**
- * O id do item no carrinho é `${produtoId}${cor}`. Para consultar o preço na
- * Airtable é preciso o id do produto, que é o que o front manda em
- * `productId` — mas por segurança nunca confiamos no preço que vem junto.
- */
 async function calculateOrderAmount(cart) {
   const table = getTable()
 
@@ -43,9 +43,6 @@ export default async function handler(request, response) {
   if (request.method !== 'POST') {
     return response.status(405).json({ error: 'Método não permitido' })
   }
-
-  // A Vercel já entrega o corpo parseado quando o content-type é JSON, mas
-  // uma string ainda chega aqui se o cliente mandar outro content-type.
   let body = request.body
   if (typeof body === 'string') {
     try {
@@ -62,11 +59,9 @@ export default async function handler(request, response) {
   }
 
   try {
-    // O valor é recalculado aqui a partir dos preços da Airtable, nunca a
-    // partir do total que o cliente manda.
     const amount = await calculateOrderAmount(cart)
 
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntent = await getStripe().paymentIntents.create({
       amount,
       currency: 'brl',
       automatic_payment_methods: { enabled: true },

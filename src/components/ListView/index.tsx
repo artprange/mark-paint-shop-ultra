@@ -4,7 +4,6 @@ import { formatPrice } from '../../utils/helpers'
 import { Wrapper } from './styles'
 import type { ProductGridProps } from '../GridView/types'
 
-/** Corta sem deixar a frase pela metade quando o texto é mais longo. */
 function excerpt(text: string, max = 150) {
   if (text.length <= max) return text
   return `${text.slice(0, max).trimEnd()}...`

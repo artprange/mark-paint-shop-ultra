@@ -12,12 +12,6 @@ import carbono from '../../assets/products/quadro_cabono.webp'
 
 import type { SingleProduct } from '../../types/product'
 
-/**
- * Catálogo local, montado sobre as fotos reais em `src/assets/products`.
- *
- * Serve de origem de dados enquanto a Airtable não está ligada — ver
- * `./index.ts`. Preços em centavos, como espera `utils/helpers.formatPrice`.
- */
 export const CATALOG: SingleProduct[] = [
   {
     id: 'roda-bbs',

@@ -4,9 +4,7 @@ import { Wrapper } from './styles'
 import type { ProductImagesProps } from './types'
 
 export default function ProductImages({ images }: ProductImagesProps) {
-  // Guarda o índice, não a imagem: o default antigo era `[[]]` — um array com
-  // um array dentro — e o estado, por ser inicializado uma única vez, ficava
-  // preso na imagem do produto anterior ao navegar entre produtos.
+
   const [mainIndex, setMainIndex] = useState(0)
 
   if (images.length === 0) return null

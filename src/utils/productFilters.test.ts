@@ -25,8 +25,7 @@ function produto(over: Partial<Product> = {}): Product {
 }
 
 describe('validateProductSearch', () => {
-  // A query string é editável pelo usuário. Estes testes são o contrato:
-  // entrada inválida vira o padrão, nunca erro de navegação.
+
   it('descarta valores que não pertencem ao schema', () => {
     expect(
       validateProductSearch({
@@ -93,7 +92,7 @@ describe('applyProductSearch', () => {
   })
 
   it('não muta a lista recebida', () => {
-    // Array.sort ordena no lugar; a lista vem do loader e é compartilhada.
+
     const original = [...catalogo]
     applyProductSearch(catalogo, { sort: 'price-highest' })
     expect(catalogo).toEqual(original)
@@ -126,7 +125,7 @@ describe('applyProductSearch', () => {
 
 describe('catalogMaxPrice', () => {
   it('devolve 0 para catálogo vazio', () => {
-    // Math.max() sem argumentos devolve -Infinity e zeraria o slider.
+
     expect(catalogMaxPrice([])).toBe(0)
   })
 

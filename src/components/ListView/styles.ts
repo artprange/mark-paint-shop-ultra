@@ -6,7 +6,8 @@ export const Wrapper = styled.section`
 
   img {
     display: block;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     height: 200px;
     object-fit: cover;
     border-radius: var(--radius);

@@ -17,10 +17,6 @@ export default function App() {
   )
 }
 
-/**
- * Separado porque useUserContext só pode ser chamado dentro do UserProvider,
- * e o router precisa do auth no context para o guard de /checkout.
- */
 function RouterWithAuth() {
   const auth = useUserContext()
   return <RouterProvider router={router} context={{ auth }} />

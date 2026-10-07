@@ -7,8 +7,6 @@ import { Wrapper } from './styles'
 export default function Filters() {
   const { search, options, setSearch, clearFilters } = useProductFilters()
 
-  // Campo ausente na URL é o padrão. O slider cai no teto do catálogo, e os
-  // seletores em "all".
   const category = search.category ?? 'all'
   const company = search.company ?? 'all'
   const color = search.color ?? 'all'

@@ -2,11 +2,6 @@ import axios from 'axios'
 import { ProductNotFoundError, type ProductsService } from './types'
 import type { Product, SingleProduct } from '../../types/product'
 
-/**
- * Implementação HTTP. `baseUrl` é a raiz da API — hoje as funções em api/,
- * mas nada aqui depende do provedor: qualquer runtime que exponha
- * `/products` e `/single-product?id=` serve.
- */
 export function createHttpProductsService(baseUrl: string): ProductsService {
   const root = baseUrl.replace(/\/$/, '')
 

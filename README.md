@@ -1,126 +1,49 @@
 # Mark Paint Shop
 
-Loja da Mark Paint Shop — preparação e pintura de rodas, pinças, quadros,
-capacetes e componentes de motor.
+An online storefront for custom painting services and automotive and bike parts.
 
-React 19 + TypeScript + Vite, TanStack Router, styled-components.
+Built with React, TypeScript, Vite, TanStack Router, and styled-components.
 
-## Rodando
+## Getting started
+
+Use Node.js 22.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Sem nenhuma variável de ambiente a aplicação sobe completa: catálogo local,
-login simulado e checkout simulado. Nada é cobrado e nenhuma chave é
-necessária.
+The app runs without environment variables using a local product catalog, simulated login, and simulated checkout. No payments are charged in this mode.
 
-| Script | O que faz |
-| --- | --- |
-| `npm run dev` | Servidor de desenvolvimento |
-| `npm run build` | Checagem de tipos (`tsc -b`) e build de produção |
-| `npm run lint` | ESLint |
-| `npm test` | Testes (Vitest) |
-| `npm run preview` | Serve o build local |
-
-## Ligando os serviços reais
-
-Copie `.env.example` para `.env` e preencha só o que quiser ativar — cada
-serviço é independente, e o que ficar em branco continua no modo simulado.
-
-| Variável | Efeito |
-| --- | --- |
-| `VITE_PRODUCTS_API` | Troca o catálogo local pela API real (`/api`) |
-| `VITE_AUTH0_DOMAIN` + `VITE_AUTH0_CLIENT_ID` | Troca o login simulado pelo Auth0 |
-| `VITE_STRIPE_PUBLIC_KEY` + `VITE_PAYMENTS_API` | Troca o checkout simulado pela Stripe (`/api`) |
-
-As variáveis sem prefixo `VITE_` (`AIRTABLE_*`, `STRIPE_SECRET_KEY`) são do
-back-end e nunca chegam ao navegador. **A chave secreta da Stripe não pode
-levar o prefixo `VITE_`** — isso a publicaria no bundle.
-
-## Filtros na URL
-
-Os filtros da listagem vivem na query string, não em estado de componente:
-
-```
-/products?category=freios&sort=price-highest&view=list
-```
-
-Uma busca filtrada é um link — dá para compartilhar, favoritar, recarregar e
-voltar pelo histórico. A query string é validada na entrada da rota
-(`validateProductSearch`): como é o usuário quem pode editá-la, um valor
-inválido vira o padrão em vez de erro. Parâmetro ausente significa valor
-padrão, então a URL só carrega o que foi mexido de fato.
-
-## Estrutura
-
-```
-src/
-  routes/              árvore de rotas (file-based); gera routeTree.gen.ts
-  components/<Nome>/   index.tsx, styles.ts, types.ts
-  pages/<Nome>/        index.tsx, styles.ts
-  context/<nome>/      provider + hook tipados
-  reducers/            unions discriminadas por action
-  services/            contratos de dados (produtos, pagamento)
-  types/               tipos de domínio compartilhados
-api/                   funções serverless (Airtable, Stripe)
-```
-
-`src/routes` só declara rotas e aponta para as páginas; os componentes
-continuam em `src/pages`. `routeTree.gen.ts` é gerado pelo plugin do Vite e
-vai para o repositório de propósito — `npm run build` roda `tsc -b` antes do
-vite, então num clone limpo o typecheck falharia sem ele.
-
-### Dados nos loaders
-
-O catálogo é carregado no loader da rota raiz e o produto único no loader de
-`/products/$id`. Os dados chegam resolvidos antes do primeiro render, então
-não há estado de loading espalhado pelos componentes: quem trata espera e
-falha é a própria rota, por `pendingComponent` e `errorComponent`.
-
-### A camada de serviços
-
-A UI não conhece Airtable, Netlify nem Stripe. Ela fala com os contratos em
-`src/services/` e com os hooks de context. Cada integração tem duas
-implementações — uma real e uma simulada — escolhidas em tempo de carga pela
-presença das variáveis de ambiente.
-
-É isso que permite rodar a aplicação inteira sem credencial, e trocar de
-provedor sem tocar em componente.
-
-## Testes
+## Scripts
 
 ```bash
-npm test
+npm run dev      # Start the development server
+npm run build    # Check types and build for production
+npm run preview  # Preview the production build
+npm run lint     # Run ESLint
+npm test         # Run tests
 ```
 
-Cobrem a lógica pura: validação dos filtros da URL, aplicação de filtros e
-ordenação, e o reducer do carrinho. São as partes onde um erro é silencioso —
-um filtro que devolve a lista errada ou um carrinho que ultrapassa o estoque
-não quebram a tela, só entregam o resultado errado.
+## Optional integrations
 
-## Deploy
+Copy `.env.example` to `.env` to configure the services you need:
 
-Hospedado na Vercel, preset Vite, root `./`. O `vercel.json` declara o
-rewrite de SPA — sem ele, recarregar `/products` direto no navegador devolve
-404, porque esse caminho não existe como arquivo. A regra exclui `/api/` para
-não engolir as funções.
+- **Products:** `VITE_PRODUCTS_API` enables the product API backed by Airtable.
+- **Authentication:** `VITE_AUTH0_DOMAIN` and `VITE_AUTH0_CLIENT_ID` enable Auth0.
+- **Payments:** `VITE_STRIPE_PUBLIC_KEY` and `VITE_PAYMENTS_API` enable Stripe checkout.
 
-A versão do Node vem de `engines.node` no package.json. As variáveis de
-ambiente são configuradas no painel da Vercel — tanto as `VITE_*` (lidas
-durante o build) quanto as do back-end.
+Configure the corresponding `AIRTABLE_*` variables and `STRIPE_SECRET_KEY` on the backend. Keep secret keys out of variables prefixed with `VITE_`, which are exposed to the browser.
 
-Sem nenhuma variável configurada o site publicado funciona: catálogo local,
-login simulado e checkout simulado. É proposital — o deploy não depende de
-credencial para ser visitável.
+## Project structure
 
-As funções em `api/` seguem a assinatura da Vercel
-(`export default (request, response)`). Arquivos sob `api/_lib` não viram
-endpoint: a Vercel ignora o que começa com underscore.
+- `src/components/` — Shared UI components
+- `src/pages/` — Page layouts
+- `src/routes/` — Route definitions
+- `src/context/` — Cart, authentication, and sidebar state
+- `src/services/` — Product and payment integrations
+- `api/` — Vercel serverless endpoints
 
-### Imagens
+## Deployment
 
-As fotos de produto são servidas em WebP, redimensionadas para 1200px no lado
-maior. Os originais eram PNG de câmera de celular somando 57 MB; a página de
-produtos sozinha carregava mais de 50 MB. Hoje o deploy inteiro tem 3 MB.
+Deploy to Vercel using the Vite preset. The included `vercel.json` configures routing for the single-page app.

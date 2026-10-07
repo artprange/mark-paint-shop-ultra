@@ -19,11 +19,6 @@ function readStoredUser(): AppUser | null {
   }
 }
 
-/**
- * Login de mentira, para rodar sem Auth0 configurado. Não valida nada e não
- * protege nada — serve só para exercitar os caminhos de UI que dependem de
- * "tem usuário logado?".
- */
 export function MockUserProvider({ children }: UserProviderProps) {
   const [myUser, setMyUser] = useState<AppUser | null>(readStoredUser)
 
