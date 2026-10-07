@@ -1,7 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-
-// https://vite.dev/config/
+import { tanstackRouter } from '@tanstack/router-plugin/vite'
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    tanstackRouter({
+      target: 'react',
+      autoCodeSplitting: true,
+      routeTreeFileHeader: ['/* eslint-disable */', '// @ts-nocheck'],
+    }),
+    react(),
+  ],
 })
